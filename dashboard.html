@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electro Lineras — Dashboard</title>
+  <title>Le Neurone — Dashboard</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
@@ -11,7 +11,7 @@
 
 <!-- ── TOPBAR (solo visible en móvil) ──────────────────────── -->
 <div class="topbar">
-  <div class="topbar-logo">⚡ Electro<span>Lineras</span></div>
+  <div class="topbar-logo">⚡ Le <span>Neurone</span></div>
   <button class="hamburger" onclick="toggleSidebar()" aria-label="Abrir menú">
     <span></span><span></span><span></span>
   </button>
@@ -68,7 +68,7 @@
         <h2>Realizar Reserva</h2>
         <p>Selecciona una electrolinera en el mapa para reservar tu cargador</p>
       </div>
-      <div style="padding: 0 36px;" id="reserva-inner">
+      <div class="inner-pad" id="reserva-inner">
         <div class="map-info-bar">
           <div class="map-badge total">80 electrolineras en Bogotá</div>
           <div class="map-badge hint">💡 Toca un marcador para reservar</div>
@@ -76,7 +76,7 @@
         <div id="map"></div>
       </div>
 
-      <div id="res-panel" class="res-panel" style="display:none; margin: 16px 36px 0;">
+      <div id="res-panel" class="res-panel" style="display:none;" class="res-panel-wrap">
         <div class="res-panel-header">
           <span class="res-panel-title">Nueva Reserva</span>
           <span class="res-panel-station" id="res-station-name"></span>
@@ -110,7 +110,7 @@
         <h2>Iniciar Carga</h2>
         <p>Ingresa el código de 4 dígitos de tu reserva para activar el cargador</p>
       </div>
-      <div style="padding: 0 36px;">
+      <div class="inner-pad">
         <div class="card charge-box">
           <div class="card-title">Código de reserva</div>
           <input type="text" class="code-input" id="charge-code"
@@ -118,7 +118,6 @@
                  oninput="this.value=this.value.replace(/\D/g,'')">
           <button class="btn-confirm" onclick="startCharge()">Validar e Iniciar Carga</button>
           <div id="charge-result" class="charge-result">
-            <div class="result-icon"  id="cr-icon"></div>
             <div class="result-title" id="cr-title"></div>
             <div class="result-sub"   id="cr-sub"></div>
           </div>
@@ -132,7 +131,7 @@
         <h2>Historial de Reservas</h2>
         <p>Consulta el estado de todas tus reservas</p>
       </div>
-      <div style="padding: 0 36px;">
+      <div class="inner-pad">
         <div id="history-list"></div>
       </div>
     </div>
@@ -143,7 +142,7 @@
         <h2>Mi Perfil</h2>
         <p>Información de tu cuenta</p>
       </div>
-      <div style="padding: 0 36px;">
+      <div class="inner-pad">
         <div class="card">
           <div class="profile-grid">
             <div class="profile-avatar-card">
@@ -180,7 +179,7 @@
         <h2>Métodos de Pago</h2>
         <p>Gestiona tus métodos de pago para las sesiones de carga</p>
       </div>
-      <div style="padding: 0 36px;">
+      <div class="inner-pad">
         <div class="payment-card">
           <div class="payment-icon">💳</div>
           <div class="payment-info">
@@ -221,7 +220,6 @@
 
 <!-- ── TOAST ─────────────────────────────────────────────────── -->
 <div class="toast" id="toast">
-  <div class="toast-icon" id="toast-icon">✅</div>
   <div class="toast-content">
     <div class="toast-title" id="toast-title"></div>
     <div class="toast-body"  id="toast-body"></div>
