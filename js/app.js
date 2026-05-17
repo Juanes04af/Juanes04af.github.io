@@ -138,9 +138,9 @@ function makeReservation() {
   const time      = document.getElementById('res-time').value;
   const duration  = parseInt(document.getElementById('res-duration').value);
 
-  if (!date) return showToast('⚠️', 'Campo requerido', 'Selecciona una fecha.');
-  if (!time) return showToast('⚠️', 'Campo requerido', 'Selecciona una hora.');
-  if (!duration || duration < 10) return showToast('⚠️', 'Campo requerido', 'Ingresa una duración mínima de 10 minutos.');
+  if (!date) return showToast('Campo requerido', 'Selecciona una fecha.');
+  if (!time) return showToast('Campo requerido', 'Selecciona una hora.');
+  if (!duration || duration < 10) return showToast('Campo requerido', 'Ingresa una duración mínima de 10 minutos.');
 
   // Check availability: detecta traslape de rangos horarios
   // Dos reservas se chocan si: inicio_nueva < fin_existente Y fin_nueva > inicio_existente
@@ -164,8 +164,7 @@ function makeReservation() {
     const exStart = toMinutes(conflict.time);
     const exEnd   = exStart + parseInt(conflict.duration);
     const fmtMin  = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
-    showToast('❌', 'Horario no disponible',
-      `Este conector está ocupado de ${fmtMin(exStart)} a ${fmtMin(exEnd)}.`);
+    showToast('Horario no disponible', `Este conector está ocupado de ${fmtMin(exStart)} a ${fmtMin(exEnd)}.`);
     return;
   }
 
@@ -330,10 +329,9 @@ function startCharge() {
   }
 }
 
-function showChargeResult(type, icon, title, sub) {
-  document.getElementById('cr-icon').textContent  = icon;
+function showChargeResult(type, title, sub) {
   document.getElementById('cr-title').textContent = title;
-  document.getElementById('cr-sub').textContent   = sub;
+  document.getElementById('cr-sub').textContent   = sub || '';
   const el = document.getElementById('charge-result');
   el.className = 'charge-result ' + type;
   el.style.display = 'block';
@@ -358,10 +356,9 @@ function alertAddPayment() {
 
 // ── TOAST ─────────────────────────────────────────────────────
 let toastTimer;
-function showToast(icon, title, body) {
-  document.getElementById('toast-icon').textContent  = icon;
+function showToast(title, body) {
   document.getElementById('toast-title').textContent = title;
-  document.getElementById('toast-body').textContent  = body;
+  document.getElementById('toast-body').textContent  = body || '';
   const toast = document.getElementById('toast');
   toast.classList.add('show');
   clearTimeout(toastTimer);
