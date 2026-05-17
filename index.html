@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Neurone — Acceso</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <span class="logo-icon">⚡</span>
+      <h1>Le <span>Neurone</span></h1>
+      <p>Sistema de Reservas para Vehículos Eléctricos- DEMO Bogotá</p>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Iniciar Sesión</div>
+      <div class="auth-tab" id="tab-register" onclick="switchTab('register')">Registrarse</div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-form active" id="form-login">
+      <div class="auth-error" id="login-error"></div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="tu@correo.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn-primary" onclick="login()">Entrar al sistema</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="auth-form" id="form-register">
+      <div class="auth-error" id="register-error"></div>
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" id="reg-name" placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" id="reg-email" placeholder="tu@correo.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      <button class="btn-primary" onclick="register()">Crear cuenta</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

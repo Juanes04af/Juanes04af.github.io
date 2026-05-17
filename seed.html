@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datos de Prueba — Le Neurone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #16161f; --bg2: #1e1e2c; --bg3: #26263a;
+      --border: rgba(255,255,255,0.08);
+      --green:  #7dd4a0; --blue: #93c5fd; --purple: #c4b5fd;
+      --red: #fca5a5; --muted: #7070a0; --text: #f0f0ff;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 20%, rgba(125,212,160,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(196,181,253,0.07) 0%, transparent 60%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .box {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px 36px;
+      max-width: 460px; width: 100%;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+    .logo { text-align: center; margin-bottom: 28px; }
+    .logo-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+    .logo h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.4px; }
+    .logo h1 span { color: var(--green); }
+    .logo p { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+    .reset-notice {
+      background: rgba(252,165,165,0.08); border: 1px solid rgba(252,165,165,0.25);
+      border-radius: 10px; padding: 10px 14px; font-size: 0.82rem;
+      color: var(--red); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .user-list { margin-bottom: 24px; }
+    .user-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--muted); font-weight: 600; margin-bottom: 10px;
+    }
+    .user-item {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 13px 15px; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .user-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+    }
+    .u1 { background: rgba(125,212,160,0.15); border: 1px solid rgba(125,212,160,0.3); }
+    .u2 { background: rgba(147,197,253,0.15); border: 1px solid rgba(147,197,253,0.3); }
+    .u3 { background: rgba(196,181,253,0.15); border: 1px solid rgba(196,181,253,0.3); }
+    .user-info { flex: 1; min-width: 0; }
+    .user-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+    .user-creds {
+      font-size: 0.76rem; color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .res-count {
+      font-size: 0.7rem; padding: 3px 8px; border-radius: 20px;
+      background: var(--bg2); color: var(--muted);
+      border: 1px solid var(--border); flex-shrink: 0;
+    }
+    .actions { display: flex; flex-direction: column; gap: 10px; }
+    .btn-load {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      color: #111; font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem; font-weight: 700; border: none;
+      border-radius: 10px; cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-load:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(125,212,160,0.25); }
+    .btn-load:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-skip {
+      width: 100%; padding: 12px; background: transparent;
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--muted); font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem; cursor: pointer; transition: all 0.2s;
+      text-decoration: none; text-align: center; display: block;
+    }
+    .btn-skip:hover { border-color: rgba(255,255,255,0.18); color: var(--text); }
+    .status-bar {
+      margin-top: 16px; background: rgba(125,212,160,0.08);
+      border: 1px solid rgba(125,212,160,0.25); border-radius: 10px;
+      padding: 12px 16px; font-size: 0.85rem; color: var(--green);
+      display: none; text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <h1>Le <span>Neurone</span></h1>
+    <p>Cargador de datos de prueba · Demo Bogotá</p>
+  </div>
+
+  <div class="reset-notice">
+    ⚠️ Este botón borra todos los datos actuales y carga los de prueba desde cero.
+  </div>
+
+  <div class="user-list">
+    <div class="user-label">Usuarios de prueba</div>
+    <div class="user-item">
+      <div class="user-avatar u1">👤</div>
+      <div class="user-info">
+        <div class="user-name">Carlos Mendoza</div>
+        <div class="user-creds">carlos@gmail.com · demo123</div>
+      </div>
+      <div class="res-count">4 reservas</div>
+    </div>
+    <div class="user-item">
+      <div class="user-avatar u2">👤</div>
+      <div class="user-info">
+        <div class="user-name">María Torres</div>
+        <div class="user-creds">maria@outlook.com · demo123</div>
+      </div>
+      <div class="res-count">5 reservas</div>
+    </div>
+    <div class="user-item">
+      <div class="user-avatar u3">👤</div>
+      <div class="user-info">
+        <div class="user-name">Andrés López</div>
+        <div class="user-creds">andres@poligran.edu.co · demo123</div>
+      </div>
+      <div class="res-count">5 reservas</div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-load" id="btn-load" onclick="seedData()">
+      Limpiar y cargar datos de prueba
+    </button>
+    <a class="btn-skip" href="index.html">Ir al login sin cargar</a>
+  </div>
+
+  <div class="status-bar" id="status">
+     Datos cargados correctamente. Redirigiendo al login
+  </div>
+</div>
+
+<script>
+function seedData() {
+  const btn = document.getElementById('btn-load');
+  btn.disabled = true;
+  btn.textContent = 'Cargando...';
+
+  // LIMPIA TODO antes de cargar
+  localStorage.removeItem('el_users');
+  localStorage.removeItem('el_reservations');
+
+  const users = [
+    { name: 'Carlos Mendoza', email: 'carlos@gmail.com',       password: 'demo123' },
+    { name: 'Maria Torres',   email: 'maria@outlook.com',       password: 'demo123' },
+    { name: 'Andres Lopez',   email: 'andres@poligran.edu.co',  password: 'demo123' }
+  ];
+  localStorage.setItem('el_users', JSON.stringify(users));
+
+  const today = new Date();
+  const fmt   = d => d.toISOString().split('T')[0];
+  const add   = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+
+  const reservations = [
+    // Carlos Mendoza
+    { code:'2847', userEmail:'carlos@gmail.com', stationName:'Hub La Alhambra', network:'EVX Enel X', address:'Cl. 114A # 45-98', connector:'CCS2', date:fmt(add(today,3)), time:'09:00', duration:45, status:'pendiente', createdAt:add(today,-1).toISOString() },
+    { code:'5193', userEmail:'carlos@gmail.com', stationName:'Hub Calle 97', network:'EVX Enel X', address:'Cl. 97 # 10-02', connector:'CCS1', date:fmt(add(today,7)), time:'14:30', duration:60, status:'pendiente', createdAt:add(today,-2).toISOString() },
+    { code:'7362', userEmail:'carlos@gmail.com', stationName:'Hub Modelia', network:'EVX Enel X', address:'Cra. 75 # 23F-27', connector:'CCS1', date:fmt(add(today,-5)), time:'11:00', duration:30, status:'hecha', createdAt:add(today,-10).toISOString() },
+    { code:'4481', userEmail:'carlos@gmail.com', stationName:'Hub Terminal Salitre', network:'EVX Enel X', address:'Cl. 22C # 68F-34', connector:'CCS2', date:fmt(add(today,-8)), time:'16:00', duration:45, status:'cancelada', createdAt:add(today,-12).toISOString() },
+    // Maria Torres
+    { code:'9014', userEmail:'maria@outlook.com', stationName:'Club El Nogal', network:'Independiente', address:'Cra 7 # 78-21', connector:'Tipo 1', date:fmt(add(today,1)), time:'10:00', duration:60, status:'pendiente', createdAt:add(today,-1).toISOString() },
+    { code:'3357', userEmail:'maria@outlook.com', stationName:'Carulla El Retiro', network:'EVX Enel X', address:'Cl 82 # 11-75', connector:'Tipo 1', date:fmt(add(today,5)), time:'08:30', duration:90, status:'pendiente', createdAt:today.toISOString() },
+    { code:'6629', userEmail:'maria@outlook.com', stationName:'Porsche Center Bogota', network:'Porsche Destination', address:'Auto Norte # 123-55', connector:'Tipo 2', date:fmt(add(today,-3)), time:'13:00', duration:30, status:'hecha', createdAt:add(today,-7).toISOString() },
+    { code:'1823', userEmail:'maria@outlook.com', stationName:'Compensar Av. 68', network:'Independiente', address:'Av Cra 68 # 49A-47', connector:'Tipo 1', date:fmt(add(today,-10)), time:'17:00', duration:45, status:'hecha', createdAt:add(today,-14).toISOString() },
+    { code:'5540', userEmail:'maria@outlook.com', stationName:'Edificio Elements', network:'Independiente', address:'Cl 98 # 21-36', connector:'Tipo 2', date:fmt(add(today,-2)), time:'09:30', duration:60, status:'cancelada', createdAt:add(today,-6).toISOString() },
+    // Andres Lopez
+    { code:'8876', userEmail:'andres@poligran.edu.co', stationName:'Hub Nicolas de Federman', network:'EVX Enel X', address:'Cl. 58A Bis # 37-28', connector:'GBT', date:fmt(add(today,2)), time:'07:00', duration:60, status:'pendiente', createdAt:today.toISOString() },
+    { code:'2203', userEmail:'andres@poligran.edu.co', stationName:'Parking Plus Centro Internacional', network:'Parking Plus', address:'Cra 13 # 27-50', connector:'Tipo 1', date:fmt(add(today,4)), time:'12:00', duration:30, status:'pendiente', createdAt:add(today,-1).toISOString() },
+    { code:'7745', userEmail:'andres@poligran.edu.co', stationName:'Hub San Andresito de la 38', network:'EVX Enel X', address:'Cl. 9 # 37A-60', connector:'CCS1', date:fmt(add(today,-4)), time:'15:30', duration:45, status:'hecha', createdAt:add(today,-8).toISOString() },
+    { code:'3398', userEmail:'andres@poligran.edu.co', stationName:'Terminal de Carga El Dorado', network:'Aeropuerto', address:'Tramo 1 Aeropuerto', connector:'CCS2', date:fmt(add(today,-6)), time:'10:00', duration:30, status:'cancelada', createdAt:add(today,-9).toISOString() },
+    { code:'6017', userEmail:'andres@poligran.edu.co', stationName:'Hub La Alhambra', network:'EVX Enel X', address:'Cl. 114A # 45-98', connector:'GBT', date:fmt(add(today,-12)), time:'11:30', duration:60, status:'hecha', createdAt:add(today,-15).toISOString() }
+  ];
+  localStorage.setItem('el_reservations', JSON.stringify(reservations));
+
+  document.getElementById('status').style.display = 'block';
+  setTimeout(() => window.location.href = 'index.html', 1800);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electro Lineras — Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+
+<!-- ── TOPBAR (solo visible en móvil) ──────────────────────── -->
+<div class="topbar">
+  <div class="topbar-logo">⚡ Electro<span>Lineras</span></div>
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- Overlay oscuro detrás del sidebar en móvil -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ───────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">⚡ Le <span>Neurone</span></div>
+      <small>v1.0 · Demo Bogotá</small>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-section="reserva" onclick="goTo('reserva')">
+        <span class="nav-icon">🗺️</span> Realizar Reserva
+      </div>
+      <div class="nav-item" data-section="carga" onclick="goTo('carga')">
+        <span class="nav-icon">⚡</span> Iniciar Carga
+      </div>
+      <div class="nav-item" data-section="historial" onclick="goTo('historial')">
+        <span class="nav-icon">📋</span> Historial de Reservas
+      </div>
+      <div class="nav-item" data-section="perfil" onclick="goTo('perfil')">
+        <span class="nav-icon">👤</span> Mi Perfil
+      </div>
+      <div class="nav-item" data-section="pagos" onclick="goTo('pagos')">
+        <span class="nav-icon">💳</span> Métodos de Pago
+      </div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-card">
+        <div class="user-avatar">🙍‍♂️</div>
+        <div class="user-info">
+          <div class="user-name" id="sb-name">Cargando</div>
+          <div class="user-role">Conductor EV</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ──────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- RESERVA -->
+    <div id="sec-reserva" class="section active">
+      <div class="page-header">
+        <h2>Realizar Reserva</h2>
+        <p>Selecciona una electrolinera en el mapa para reservar tu cargador</p>
+      </div>
+      <div style="padding: 0 36px;" id="reserva-inner">
+        <div class="map-info-bar">
+          <div class="map-badge total">80 electrolineras en Bogotá</div>
+          <div class="map-badge hint">💡 Toca un marcador para reservar</div>
+        </div>
+        <div id="map"></div>
+      </div>
+
+      <div id="res-panel" class="res-panel" style="display:none; margin: 16px 36px 0;">
+        <div class="res-panel-header">
+          <span class="res-panel-title">Nueva Reserva</span>
+          <span class="res-panel-station" id="res-station-name"></span>
+          <button class="res-panel-close" onclick="closeResPanel()">✕</button>
+        </div>
+        <div class="res-form-grid">
+          <div class="field full">
+            <label>Tipo de conector</label>
+            <select id="res-connector"></select>
+          </div>
+          <div class="field">
+            <label>Fecha</label>
+            <input type="date" id="res-date">
+          </div>
+          <div class="field">
+            <label>Hora</label>
+            <input type="time" id="res-time">
+          </div>
+          <div class="field full">
+            <label>Duración (minutos)</label>
+            <input type="number" id="res-duration" placeholder="Ej: 30" min="10" max="180">
+          </div>
+        </div>
+        <button class="btn-confirm" onclick="makeReservation()">Confirmar Reserva</button>
+      </div>
+    </div>
+
+    <!-- INICIAR CARGA -->
+    <div id="sec-carga" class="section">
+      <div class="page-header">
+        <h2>Iniciar Carga</h2>
+        <p>Ingresa el código de 4 dígitos de tu reserva para activar el cargador</p>
+      </div>
+      <div style="padding: 0 36px;">
+        <div class="card charge-box">
+          <div class="card-title">Código de reserva</div>
+          <input type="text" class="code-input" id="charge-code"
+                 placeholder="0000" maxlength="4"
+                 oninput="this.value=this.value.replace(/\D/g,'')">
+          <button class="btn-confirm" onclick="startCharge()">Validar e Iniciar Carga</button>
+          <div id="charge-result" class="charge-result">
+            <div class="result-icon"  id="cr-icon"></div>
+            <div class="result-title" id="cr-title"></div>
+            <div class="result-sub"   id="cr-sub"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div id="sec-historial" class="section">
+      <div class="page-header">
+        <h2>Historial de Reservas</h2>
+        <p>Consulta el estado de todas tus reservas</p>
+      </div>
+      <div style="padding: 0 36px;">
+        <div id="history-list"></div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div id="sec-perfil" class="section">
+      <div class="page-header">
+        <h2>Mi Perfil</h2>
+        <p>Información de tu cuenta</p>
+      </div>
+      <div style="padding: 0 36px;">
+        <div class="card">
+          <div class="profile-grid">
+            <div class="profile-avatar-card">
+              <div class="profile-avatar-big">🙍‍♂️</div>
+              <div class="profile-avatar-info">
+                <h3 id="prof-name">—</h3>
+                <p  id="prof-email">—</p>
+              </div>
+            </div>
+            <div class="profile-stat">
+              <label>Tipo de cuenta</label>
+              <span>Conductor EV</span>
+            </div>
+            <div class="profile-stat">
+              <label>Estado</label>
+              <span style="color:var(--green)">✓ Activo</span>
+            </div>
+            <div class="profile-stat">
+              <label>Total reservas</label>
+              <span id="prof-total">0</span>
+            </div>
+            <div class="profile-stat">
+              <label>Cargas realizadas</label>
+              <span id="prof-done">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGOS -->
+    <div id="sec-pagos" class="section">
+      <div class="page-header">
+        <h2>Métodos de Pago</h2>
+        <p>Gestiona tus métodos de pago para las sesiones de carga</p>
+      </div>
+      <div style="padding: 0 36px;">
+        <div class="payment-card">
+          <div class="payment-icon">💳</div>
+          <div class="payment-info">
+            <h4>Visa •••• 4321</h4>
+            <p>Vence: 12/28 · Tarjeta de crédito principal</p>
+          </div>
+          <div class="payment-status">Activo</div>
+        </div>
+        <div class="payment-card">
+          <div class="payment-icon">📱</div>
+          <div class="payment-info">
+            <h4>Nequi</h4>
+            <p>Cuenta vinculada · Pagos rápidos sin contacto</p>
+          </div>
+          <div class="payment-status">Activo</div>
+        </div>
+        <button class="btn-add-payment" onclick="alertAddPayment()">
+          + Agregar nuevo método de pago
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── MODAL CANCELAR ────────────────────────────────────────── -->
+<div class="modal-overlay" id="cancel-modal">
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <h3>¿Cancelar reserva?</h3>
+    <p>Esta acción liberará el espacio en la electrolinera.<br>El código de reserva quedará inválido.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel"  onclick="closeModal()">No, mantener</button>
+      <button class="btn-modal-confirm" onclick="confirmCancel()">Sí, cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ─────────────────────────────────────────────────── -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon">✅</div>
+  <div class="toast-content">
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-body"  id="toast-body"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
